@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="th" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>XPeng G6 Northern & Sukhothai Roadtrip (20-25 พ.ย.)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Prompt', 'sans-serif'] },
+          colors: {
+            xpeng: { 50: '#eef2ff', 400: '#38bdf8', 500: '#0ea5e9', 600: '#0284c7', 900: '#0f172a' },
+            spark: { 400: '#4ade80', 500: '#22c55e', 600: '#16a34a' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Prompt', sans-serif;
+      background-color: #0b1120;
+      color: #f1f5f9;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .glass-card {
+      background: rgba(30, 41, 59, 0.78);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .ev-glow {
+      box-shadow: 0 0 18px rgba(34, 197, 94, 0.18);
+      border-color: rgba(34, 197, 94, 0.45);
+    }
+    .hotel-glow {
+      box-shadow: 0 0 18px rgba(56, 189, 248, 0.18);
+      border-color: rgba(56, 189, 248, 0.45);
+    }
+  </style>
+</head>
+<body class="pb-24 max-w-md mx-auto min-h-screen relative shadow-2xl bg-slate-950">
+
+  <!-- Top Sticky Header & XPeng G6 Status Bar -->
+  <header class="sticky top-0 z-40 bg-slate-950/90 backdrop-blur-md border-b border-slate-800 px-4 pt-3 pb-2.5">
+    <div class="flex items-center justify-between mb-2">
+      <div>
+        <div class="flex items-center gap-1.5">
+          <span class="px-2 py-0.5 text-[10px] font-semibold rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+            <i class="fa-solid fa-bolt mr-1"></i>XPeng G6 (510 KM)
+          </span>
+          <span class="px-2 py-0.5 text-[10px] font-medium rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/30">
+            20–25 พ.ย. 2026
+          </span>
+        </div>
+        <h1 class="text-base font-bold text-white mt-1 tracking-tight">Northern & Sukhothai Trip</h1>
+      </div>
+      <div class="text-right">
+        <div class="text-xs text-slate-400">ระยะทางรวม</div>
+        <div class="text-sm font-bold text-emerald-400">1,715 กม.</div>
+      </div>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="relative mt-1">
+      <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
+      <input id="searchInput" type="text" placeholder="ค้นหาสถานที่, ร้านอาหาร, สถานีชาร์จ Spark EV..."
+        class="w-full bg-slate-900 border border-slate-800 rounded-xl pl-8 pr-8 py-1.5 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-sky-500"
+        oninput="handleSearch(this.value)" />
+      <button id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute right-2.5 top-2 text-slate-400 hover:text-white text-xs">
+        <i class="fa-solid fa-circle-xmark"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content Views -->
+  <main class="px-3.5 pt-3">
+
+    <!-- VIEW 1: ITINERARY TIMELINE -->
+    <section id="view-itinerary" class="space-y-3">
+      <!-- Day Selector Pills -->
+      <div class="flex gap-1.5 overflow-x-auto no-scrollbar pb-1" id="dayPills">
+        <button onclick="selectDay('all')" data-day="all" class="day-pill active-pill shrink-0 px-3 py-1.5 rounded-xl text-xs font-semibold bg-sky-500 text-white shadow">ทั้งหมด</button>
+        <button onclick="selectDay('d1')" data-day="d1" class="day-pill shrink-0 px-3 py-1.5 rounded-xl text-xs font-medium bg-slate-900 text-slate-300 border border-slate-800">ศ. 20 - ส. 21 (เชียงใหม่)</button>
+        <button onclick="selectDay('d2')" data-day="d2" class="day-pill shrink-0 px-3 py-1.5 rounded-xl text-xs font-medium bg-slate-900 text-slate-300 border border-slate-800">อา. 22 (เชียงราย)</button>
+        <button onclick="selectDay('d3')" data-day="d3" class="day-pill shrink-0 px-3 py-1.5 rounded-xl text-xs font-medium bg-slate-900 text-slate-300 border border-slate-800">จ. 23 (พะเยา-แพร่)</button>
+        <button onclick="selectDay('d4')" data-day="d4" class="day-pill shrink-0 px-3 py-1.5 rounded-xl text-xs font-medium bg-slate-900 text-slate-300 border border-slate-800">อ. 24 (สุโขทัย)</button>
+        <button onclick="selectDay('d5')" data-day="d5" class="day-pill shrink-0 px-3 py-1.5 rounded-xl text-xs font-medium bg-slate-900 text-slate-300 border border-slate-800">พ. 25 (ขากลับ กทม.)</button>
+      </div>
+
+      <!-- Quick Filter Chips -->
+      <div class="flex gap-1.5 overflow-x-auto no-scrollbar pb-1">
+        <button onclick="filterCategory('all')" data-cat="all" class="cat-chip px-2.5 py-1 rounded-lg text-[11px] bg-slate-800 text-sky-400 border border-sky-500/40 font-medium">ทุกประเภท</button>
+        <button onclick="filterCategory('ev')" data-cat="ev" class="cat-chip px-2.5 py-1 rounded-lg text-[11px] bg-slate-900 text-slate-400 border border-slate-800"><i class="fa-solid fa-charging-station text-emerald-400 mr-1"></i>จุดชาร์จ EV</button>
+        <button onclick="filterCategory('food')" data-cat="food" class="cat-chip px-2.5 py-1 rounded-lg text-[11px] bg-slate-900 text-slate-400 border border-slate-800"><i class="fa-solid fa-utensils text-amber-400 mr-1"></i>ร้านอาหาร</button>
+        <button onclick="filterCategory('sight')" data-cat="sight" class="cat-chip px-2.5 py-1 rounded-lg text-[11px] bg-slate-900 text-slate-400 border border-slate-800"><i class="fa-solid fa-camera text-purple-400 mr-1"></i>ที่เที่ยว/ของฝาก</button>
+        <button onclick="filterCategory('hotel')" data-cat="hotel" class="cat-chip px-2.5 py-1 rounded-lg text-[11px] bg-slate-900 text-slate-400 border border-slate-800"><i class="fa-solid fa-bed text-sky-400 mr-1"></i>ที่พัก</button>
+      </div>
+
+      <!-- Timeline Container -->
+      <div id="timelineContainer" class="space-y-3 pb-4"></div>
+    </section>
+
+    <!-- VIEW 2: EV CHARGING PLAN (XPENG G6 + SPARK EV) -->
+    <section id="view-ev" class="hidden space-y-3 pb-4">
+      <div class="glass-card rounded-2xl p-3.5 border border-emerald-500/30">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-sm font-bold text-emerald-400"><i class="fa-solid fa-bolt mr-1.5"></i>กลยุทธ์การชาร์จ XPeng G6 (510 KM)</h2>
+            <p class="text-[11px] text-slate-300 mt-0.5">สถาปัตยกรรม 800V ชาร์จตู้ Spark EV / บางจาก (20% &rarr; 85%) ใช้เวลาเพียง 15–20 นาที/จุด ระยะวิ่งจริงปลอดภัย 230–285 กม./ชาร์จ</p>
+          </div>
+        </div>
+        <!-- Interactive Range Calculator -->
+        <div class="mt-3 pt-3 border-t border-slate-800">
+          <div class="flex justify-between text-xs mb-1">
+            <span class="text-slate-400">จำลองแบตเตอรี่คงเหลือ (% SoC):</span>
+            <span id="socLabel" class="font-bold text-emerald-400">85% (~375 กม. ขับจริง)</span>
+          </div>
+          <input type="range" min="10" max="100" value="85" class="w-full accent-emerald-500" oninput="updateRangeCalc(this.value)" />
+          <div class="flex justify-between text-[10px] text-slate-500">
+            <span>10% (ควรชาร์จทันที)</span>
+            <span>50% (~220 กม.)</span>
+            <span>100% (440-510 กม.)</span>
+          </div>
+        </div>
+      </div>
+
+      <div id="evStationsContainer" class="space-y-2.5"></div>
+    </section>
+
+    <!-- VIEW 3: FOOD & SOUVENIRS GUIDE -->
+    <section id="view-food" class="hidden space-y-3 pb-4">
+      <div class="flex gap-1.5 overflow-x-auto no-scrollbar pb-1" id="foodZonePills">
+        <button onclick="filterFoodZone('all')" class="food-pill px-3 py-1 rounded-xl text-xs bg-amber-500 text-slate-950 font-semibold shrink-0">ทั้งหมด</button>
+        <button onclick="filterFoodZone('เชียงใหม่')" class="food-pill px-3 py-1 rounded-xl text-xs bg-slate-900 text-slate-300 border border-slate-800 shrink-0">เชียงใหม่</button>
+        <button onclick="filterFoodZone('เชียงราย')" class="food-pill px-3 py-1 rounded-xl text-xs bg-slate-900 text-slate-300 border border-slate-800 shrink-0">เชียงราย</button>
+        <button onclick="filterFoodZone('พะเยา')" class="food-pill px-3 py-1 rounded-xl text-xs bg-slate-900 text-slate-300 border border-slate-800 shrink-0">กว๊านพะเยา</button>
+        <button onclick="filterFoodZone('แพร่')" class="food-pill px-3 py-1 rounded-xl text-xs bg-slate-900 text-slate-300 border border-slate-800 shrink-0">แพร่</button>
+        <button onclick="filterFoodZone('สุโขทัย')" class="food-pill px-3 py-1 rounded-xl text-xs bg-slate-900 text-slate-300 border border-slate-800 shrink-0">สุโขทัย</button>
+        <button onclick="filterFoodZone('ขากลับ')" class="food-pill px-3 py-1 rounded-xl text-xs bg-slate-900 text-slate-300 border border-slate-800 shrink-0">ขากลับ (พิษณุโลก-นครสวรรค์-อยุธยา)</button>
+      </div>
+      <div id="foodListContainer" class="space-y-2.5"></div>
+    </section>
+
+    <!-- VIEW 4: HOTELS & BUDGET SUMMARY -->
+    <section id="view-summary" class="hidden space-y-3.5 pb-6">
+      <div class="glass-card rounded-2xl p-4">
+        <h2 class="text-sm font-bold text-sky-400 mb-2.5"><i class="fa-solid fa-bed mr-1.5"></i>สรุปที่พักยืนยันแล้วตลอดทริป</h2>
+        <div id="hotelsContainer" class="space-y-2.5"></div>
+      </div>
+
+      <div class="glass-card rounded-2xl p-4">
+        <h2 class="text-sm font-bold text-emerald-400 mb-2.5"><i class="fa-solid fa-wallet mr-1.5"></i>สรุประยะทาง & ประมาณการค่าใช้จ่าย</h2>
+        <div class="grid grid-cols-2 gap-2 mb-3">
+          <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800">
+            <div class="text-[11px] text-slate-400">ค่าชาร์จไฟ EV รวม (~1,715 กม.)</div>
+            <div class="text-base font-bold text-emerald-400 mt-0.5">~2,145 บาท</div>
+            <div class="text-[10px] text-slate-500">เฉลี่ย ~1.25 บาท/กม.</div>
+          </div>
+          <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800">
+            <div class="text-[11px] text-slate-400">ค่าที่พักรวม (4 คืน)</div>
+            <div class="text-base font-bold text-sky-400 mt-0.5">~4,300 บาท</div>
+            <div class="text-[10px] text-slate-500">เวียงป่าเป้าพักบ้านฟรี</div>
+          </div>
+          <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800">
+            <div class="text-[11px] text-slate-400">ค่าอาหาร & ของฝาก</div>
+            <div class="text-base font-bold text-amber-400 mt-0.5">~7,800 บาท</div>
+            <div class="text-[10px] text-slate-500">รวม 6 วัน ทุกมื้อ</div>
+          </div>
+          <div class="bg-slate-900/90 p-3 rounded-xl border border-emerald-500/40">
+            <div class="text-[11px] text-slate-300">งบประมาณรวมทั้งทริป</div>
+            <div class="text-base font-bold text-white mt-0.5">~14,245 บาท</div>
+            <div class="text-[10px] text-emerald-400">ประหยัดกว่าน้ำมัน ~3,400 บ.</div>
+          </div>
+        </div>
+
+        <div class="space-y-2 text-xs">
+          <div class="flex justify-between py-1.5 border-b border-slate-800">
+            <span class="text-slate-300">ศ. 20 - ส. 21 พ.ย. (กทม.-เชียงใหม่-เวียงป่าเป้า)</span>
+            <span class="font-semibold text-slate-100">780 กม. | 2,475 บ.</span>
+          </div>
+          <div class="flex justify-between py-1.5 border-b border-slate-800">
+            <span class="text-slate-300">อา. 22 พ.ย. (เวียงป่าเป้า-เมืองเชียงราย)</span>
+            <span class="font-semibold text-slate-100">95 กม. | 2,919 บ.</span>
+          </div>
+          <div class="flex justify-between py-1.5 border-b border-slate-800">
+            <span class="text-slate-300">จ. 23 พ.ย. (เชียงราย-กว๊านพะเยา-แพร่)</span>
+            <span class="font-semibold text-slate-100">240 กม. | 3,100 บ.</span>
+          </div>
+          <div class="flex justify-between py-1.5 border-b border-slate-800">
+            <span class="text-slate-300">อ. 24 พ.ย. (แพร่-ศรีสัชนาลัย-สุโขทัย)</span>
+            <span class="font-semibold text-slate-100">165 กม. | 3,806 บ.</span>
+          </div>
+          <div class="flex justify-between py-1.5">
+            <span class="text-slate-300">พ. 25 พ.ย. (สุโขทัย-พิษณุโลก-นครสวรรค์-กทม.)</span>
+            <span class="font-semibold text-slate-100">435 กม. | 1,944 บ.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Bottom Navigation Bar (Mobile App Style) -->
+  <nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto z-50 bg-slate-950/95 backdrop-blur-lg border-t border-slate-800 px-2 py-1.5 flex justify-around items-center">
+    <button onclick="switchTab('itinerary')" id="nav-itinerary" class="nav-btn flex flex-col items-center py-1 px-3 rounded-xl text-sky-400">
+      <i class="fa-solid fa-route text-base"></i>
+      <span class="text-[10px] font-medium mt-0.5">แผนเดินทาง</span>
+    </button>
+    <button onclick="switchTab('ev')" id="nav-ev" class="nav-btn flex flex-col items-center py-1 px-3 rounded-xl text-slate-400">
+      <i class="fa-solid fa-charging-station text-base"></i>
+      <span class="text-[10px] font-medium mt-0.5">จุดชาร์จ G6</span>
+    </button>
+    <button onclick="switchTab('food')" id="nav-food" class="nav-btn flex flex-col items-center py-1 px-3 rounded-xl text-slate-400">
+      <i class="fa-solid fa-utensils text-base"></i>
+      <span class="text-[10px] font-medium mt-0.5">ร้านเด็ดทุกมื้อ</span>
+    </button>
+    <button onclick="switchTab('summary')" id="nav-summary" class="nav-btn flex flex-col items-center py-1 px-3 rounded-xl text-slate-400">
+      <i class="fa-solid fa-hotel text-base"></i>
+      <span class="text-[10px] font-medium mt-0.5">ที่พัก & งบ</span>
+    </button>
+  </nav>
+
+  <script>
+    // Complete Master Dataset with Verified Google Maps Links
+    const itineraryItems = [
+      // Day 1: Fri 20 - Sat 21 Nov
+      {
+        id: 1, day: 'd1', dateLabel: 'ศุกร์ 20 พ.ย.', time: '21:00 - 23:45', zone: 'กรุงเทพฯ -> นครสวรรค์',
+        cat: 'ev', title: '[ชาร์จ EV #1] สถานีชาร์จ Spark (บางจาก วัดไทร นครสวรรค์)',
+        subtitle: 'ออกเดินทางจาก กทม. (แบต 100%) วิ่ง 235 กม. แวะชาร์จแรก',
+        hours: 'เปิด 24 ชม.', rating: '4.6', soc: '45% -> 85% (~18 นาที)',
+        details: 'ตั้งอยู่ริม ถ.พหลโยธิน ต.วัดไทร อ.เมืองนครสวรรค์ (สำรอง: ปั๊มน้ำมันและEVบางจาก สหกรณ์การเกษตร เมืองนครสวรรค์ หรือ คลาวด์วิลเลจ บางจาก หนองเบน)',
+        mapUrl: 'https://maps.google.com/?cid=15646423891790645649',
+        altLinks: [
+          { name: 'บางจาก สหกรณ์ฯ นครสวรรค์', url: 'https://maps.google.com/?cid=17275126890877650813' },
+          { name: 'คลาวด์วิลเลจ บางจาก หนองเบน', url: 'https://maps.google.com/?cid=2759482721982247040' }
+        ]
+      },
+      {
+        id: 2, day: 'd1', dateLabel: 'เสาร์ 21 พ.ย.', time: '00:05 - 03:00', zone: 'นครสวรรค์ -> เมืองตาก / ลำปาง',
+        cat: 'ev', title: '[ชาร์จ EV #2] ปั๊มบางจาก (น้ำมัน+อีวี) เมืองตาก2',
+        subtitle: 'ขับช่วงดึก 180 กม. แวะเติมไฟให้พร้อมขึ้นเชียงใหม่',
+        hours: 'เปิด 24 ชม.', rating: '4.1', soc: '42% -> 85% (~20 นาที)',
+        details: 'ต.น้ำรึม อ.เมืองตาก เปิด 24 ชม. (สถานีสำรองขาขึ้น: ปั๊มน้ำบางจาก แม่สลิด บ้านตาก หรือ สถานีชาร์จ SPARK EV เมืองลำปาง)',
+        mapUrl: 'https://maps.google.com/?cid=13952191889814174185',
+        altLinks: [
+          { name: 'บางจาก แม่สลิด บ้านตาก', url: 'https://maps.google.com/?cid=8390997327610511481' },
+          { name: 'สถานีชาร์จ SPARK EV ลำปาง', url: 'https://maps.google.com/?cid=12531995679564701655' }
+        ]
+      },
+      {
+        id: 3, day: 'd1', dateLabel: 'เสาร์ 21 พ.ย.', time: '07:30 - 08:45', zone: 'อ.เมืองเชียงใหม่',
+        cat: 'food', title: 'มื้อเช้า: โกเผือกโกดำ หรือ ร้านข้าวซอยแม่สาย',
+        subtitle: 'เติมพลังมื้อเช้าในตัวเมืองเชียงใหม่ (เปิดวันเสาร์ทั้ง 2 ร้าน)',
+        hours: '07:30 - 14:00', rating: '4.1 / 4.5', soc: '',
+        details: 'โกเผือกโกดำเด่นขนมปังสังขยา 4 สี ไข่กระทะ / ข้าวซอยแม่สาย (มิชลิน บิบ กูร์มองด์) เปิด 08:00-16:00 น. เด่นข้าวซอยเนื้อเปื่อยและน้ำเงี้ยว',
+        mapUrl: 'https://maps.google.com/?cid=6174407177841976205',
+        altLinks: [
+          { name: 'ร้านข้าวซอยแม่สาย', url: 'https://maps.google.com/?cid=5039605543517047272' }
+        ]
+      },
+      {
+        id: 4, day: 'd1', dateLabel: 'เสาร์ 21 พ.ย.', time: '09:15 - 10:45', zone: 'ต.สุเทพ อ.เมืองเชียงใหม่',
+        cat: 'sight', title: 'วัดพระธาตุดอยคำ',
+        subtitle: 'ไหว้พระขอพรหลวงพ่อทันใจ & ชมวิวเมืองเชียงใหม่',
+        hours: '06:00 - 18:00', rating: '4.7', soc: '',
+        details: 'ขึ้นช่วง 9 โมงเช้าอากาศเย็นสบาย ลานจอดรถด้านบนวัดยังว่าง ไม่ต้องรอนาน',
+        mapUrl: 'https://maps.google.com/?cid=15500480759448622203', altLinks: []
+      },
+      {
+        id: 5, day: 'd1', dateLabel: 'เสาร์ 21 พ.ย.', time: '11:00 - 12:15', zone: 'หลัง มช. อ.เมืองเชียงใหม่',
+        cat: 'sight', title: 'วัดอุโมงค์ สวนพุทธธรรม',
+        subtitle: 'เดินชมอุโมงค์โบราณและสวนป่าไผ่ร่มรื่น (ขับจากดอยคำ 15 นาที)',
+        hours: '04:00 - 20:00', rating: '4.6', soc: '',
+        details: 'วัดเก่าแก่ท่ามกลางธรรมชาติร่มรื่น มีอุโมงค์ใต้เจดีย์ 700 ปี',
+        mapUrl: 'https://maps.google.com/?cid=17145092333932990553', altLinks: []
+      },
+      {
+        id: 6, day: 'd1', dateLabel: 'เสาร์ 21 พ.ย.', time: '12:30 - 14:00', zone: 'หลัง มช. อ.เมืองเชียงใหม่',
+        cat: 'food', title: 'มื้อเที่ยง: สุกี้ช้างเผือก (สาขาหลัง มช.) หรือ ฮ้านถึงเจียงใหม่',
+        subtitle: 'สุกี้กระทะร้อนชื่อดังที่เปิดมื้อกลางวัน อยู่ปากซอยวัดอุโมงค์พอดี!',
+        hours: '09:00 - 00:00', rating: '4.4 / 4.8', soc: '',
+        details: 'สาขาหลัง มช. เปิดตั้งแต่ 09:00 น. ห่างวัดอุโมงค์เพียง 3 นาที หรือเลือกทานอาหารเหนือรางวัลมิชลินที่ ฮ้านถึงเจียงใหม่ ในซอยวัดอุโมงค์ และ จงเฮง ก๋วยเตี๋ยวต้มยำ นิมมาน ซอย 6',
+        mapUrl: 'https://maps.google.com/?cid=9362597521394954943',
+        altLinks: [
+          { name: 'ฮ้านถึงเจียงใหม่ (ซอยวัดอุโมงค์)', url: 'https://maps.google.com/?cid=4537952833204113893' },
+          { name: 'จงเฮง ก๋วยเตี๋ยวต้มยำ นิมมาน ซอย 6', url: 'https://maps.google.com/?cid=2654950965071083396' }
+        ]
+      },
+      {
+        id: 7, day: 'd1', dateLabel: 'เสาร์ 21 พ.ย.', time: '14:30 - 15:10', zone: 'อ.เมืองเชียงใหม่',
+        cat: 'ev', title: '[ชาร์จ EV #3] สถานีชาร์จ Spark EV (ช้างเผือก / หนองหอย)',
+        subtitle: 'อัดแบตให้เต็ม 90% ก่อนขึ้นดอยสาย ทล.118 ไปเวียงป่าเป้า',
+        hours: 'เปิด 24 ชม.', rating: '5.0', soc: '25% -> 90% (~22 นาที)',
+        details: 'ถนนโชตนา ต.ช้างเผือก อ.เมืองเชียงใหม่ (หรือสาขา Spark EV หนองหอย) ชาร์จให้เต็มเพื่อวิ่งยาวผ่านเวียงป่าเป้าเข้าเมืองเชียงรายในวันอาทิตย์',
+        mapUrl: 'https://maps.google.com/?cid=586754238360945901',
+        altLinks: [
+          { name: 'สถานีชาร์จ Spark EV หนองหอย', url: 'https://maps.google.com/?cid=14904579137645514762' }
+        ]
+      },
+      {
+        id: 8, day: 'd1', dateLabel: 'เสาร์ 21 พ.ย.', time: '15:30 - 18:00', zone: 'สันทราย -> อ.เวียงป่าเป้า',
+        cat: 'hotel', title: 'แวะลาบไก่บ้านโฮ่ง สาขา 3 -> เข้าพักบ้าน อ.เวียงป่าเป้า',
+        subtitle: 'แวะทานมื้อเย็นริมทาง ทล.118 แล้วเข้าพักที่บ้านส่วนตัว (ฟรี)',
+        hours: 'ร้านเปิด 10:00 - 21:00', rating: '4.3', soc: 'ถึงบ้านแบต ~68%',
+        details: 'ลาบไก่บ้านโฮ่ง สาขา 3 (สันทราย) เด่นลาบไก่คั่ว ต้มยำไก่เมือง จากนั้นขับตาม ทล.118 เข้าพักที่บ้าน อ.เวียงป่าเป้า จ.เชียงราย',
+        mapUrl: 'https://maps.google.com/?cid=10485893456882023173', altLinks: []
+      },
+
+      // Day 2: Sun 22 Nov
+      {
+        id: 9, day: 'd2', dateLabel: 'อาทิตย์ 22 พ.ย.', time: '07:30 - 13:30', zone: 'เวียงป่าเป้า -> เมืองเชียงราย',
+        cat: 'sight', title: 'เดินทางไปร่วมงานแต่งงานที่ตัวเมืองเชียงราย',
+        subtitle: 'ระยะทาง ~90 กม. ใช้เวลาขับรถ 1 ชั่วโมง 30 นาที',
+        hours: '-', rating: '-', soc: 'แบตคงเหลือ ~48%',
+        details: 'ถนน 4 เลนตลอดสาย ขับสบาย ร่วมแสดงความยินดีในงานแต่งงานช่วงเช้า-เที่ยง',
+        mapUrl: 'https://maps.google.com/?cid=4467002379975881651', altLinks: []
+      },
+      {
+        id: 10, day: 'd2', dateLabel: 'อาทิตย์ 22 พ.ย.', time: '14:00 - 16:30', zone: 'ริมน้ำกก อ.เมืองเชียงราย',
+        cat: 'food', title: 'ชีวิตธรรมดา คอฟฟี่เฮาส์ บิสโทร บาร์',
+        subtitle: 'พักผ่อนจิบชา กาแฟ ทานเค้กโฮมเมดและอาหารริมแม่น้ำกก',
+        hours: '09:00 - 22:00', rating: '4.6', soc: '',
+        details: 'บ้านไม้สีขาวสไตล์โคโลเนียลในสวนสวยริมน้ำกก เด่นทั้งเค้ก ข้าวซอยไก่ย่าง และสปาเก็ตตี้ไส้อั่ว',
+        mapUrl: 'https://maps.google.com/?cid=4467002379975881651', altLinks: []
+      },
+      {
+        id: 11, day: 'd2', dateLabel: 'อาทิตย์ 22 พ.ย.', time: '16:45 - 17:20', zone: 'ต.สันทราย อ.เมืองเชียงราย',
+        cat: 'ev', title: '[ชาร์จ EV #4] ปั้มบางจาก (น้ำมัน+EV) สันทราย เมืองเชียงราย',
+        subtitle: 'ชาร์จไฟเตรียมพร้อมสำหรับเดินทางไปกว๊านพะเยา-เมืองแพร่ในวันจันทร์',
+        hours: '05:00 - 22:00', rating: '4.2', soc: '45% -> 90% (~18 นาที)',
+        details: 'ตั้งอยู่ริม ถ.พหลโยธิน ต.สันทราย อ.เมืองเชียงราย ชาร์จขึ้น 90% วิ่งถึงเมืองแพร่ได้สบาย',
+        mapUrl: 'https://maps.google.com/?cid=11673386835964275544', altLinks: []
+      },
+      {
+        id: 12, day: 'd2', dateLabel: 'อาทิตย์ 22 พ.ย.', time: '18:00 - 22:00', zone: 'อ.เมืองเชียงราย',
+        cat: 'food', title: 'เดินเชียงรายไนท์บาร์ซาร์ & มื้อค่ำร้านข้าวต้มมีนา',
+        subtitle: 'เข้าที่พักในเมืองเชียงราย เดินตลาดกลางคืน และทานมื้อดึก',
+        hours: '18:00 - 23:00', rating: '4.2', soc: '',
+        details: 'เดินเล่นไนท์บาร์ซาร์ชมการแสดงพื้นเมือง และแวะทานหมูกรอบคั่วพริกเกลือ ยำปลาสลิด ที่ร้านข้าวต้มมีนา (เปิด 17:00-21:30 น.)',
+        mapUrl: 'https://maps.google.com/?cid=2495050782346488007',
+        altLinks: [
+          { name: 'ข้าวต้มมีนา เชียงราย', url: 'https://maps.google.com/?cid=4544176324518484684' }
+        ]
+      },
+
+      // Day 3: Mon 23 Nov
+      {
+        id: 13, day: 'd3', dateLabel: 'จันทร์ 23 พ.ย.', time: '08:30 - 09:30', zone: 'อ.เมืองเชียงราย',
+        cat: 'food', title: 'มื้อเช้าเชียงราย: ร้านลาบป้าไหล่-อาหารพื้นเมือง',
+        subtitle: 'ร้านอาหารเหนือพื้นบ้านรสเข้มข้น (ปิดวันอาทิตย์ เปิดวันจันทร์ 09:00 น.)',
+        hours: '09:00 - 20:00', rating: '4.5', soc: '',
+        details: 'ทานอาหารเช้าที่โรงแรม หรือแวะชิมลาบหมูคั่ว แกงอ่อม แหนมหมกไข่ ที่ร้านลาบป้าไหล่ก่อนออกเดินทางไปพะเยา',
+        mapUrl: 'https://maps.google.com/?cid=8641293328307667443', altLinks: []
+      },
+      {
+        id: 14, day: 'd3', dateLabel: 'จันทร์ 23 พ.ย.', time: '09:30 - 11:15', zone: 'เชียงราย -> กว๊านพะเยา',
+        cat: 'sight', title: 'แวะเที่ยวกว๊านพะเยา',
+        subtitle: 'ขับรถลงใต้ 95 กม. (1.5 ชม.) เดินเล่นรับลมริมทะเลสาบน้ำจืด',
+        hours: 'เปิดตลอดวัน', rating: '4.3', soc: 'แบตคงเหลือ ~68%',
+        details: 'ชมวิวดอยหลวงพะเยาและสักการะอนุสาวรีย์พ่อขุนงำเมือง (มีจุดชาร์จเสริม EleXA แม่ต๋ำ พะเยา หากต้องการแวะ)',
+        mapUrl: 'https://maps.google.com/?cid=12461969516447285180',
+        altLinks: [
+          { name: 'สถานีชาร์จ EleXA แม่ต๋ำ พะเยา', url: 'https://maps.google.com/?cid=5408972368889189555' }
+        ]
+      },
+      {
+        id: 15, day: 'd3', dateLabel: 'จันทร์ 23 พ.ย.', time: '11:15 - 12:45', zone: 'ริมกว๊านพะเยา',
+        cat: 'food', title: 'มื้อเที่ยงริมกว๊าน: ชิดลม ชมกว๊าน / ครัวออโรรา / ก๋วยเตี๋ยวอันเจริญ',
+        subtitle: 'ลิ้มรสปลาส้มไร้ก้างทอดทรงเครื่อง ต้มยำปลาคัง และกุ้งฝอยเต้น',
+        hours: '10:30 - 23:00', rating: '4.3', soc: '',
+        details: 'เลือกนั่งร้านบรรยากาศดีริมน้ำกว๊านพะเยา หรือทานก๋วยเตี๋ยวเนื้อ-หมูเจ้าเก่าแก่ ก๋วยเตี๋ยวอันเจริญเฮียน้อยหลังตลาด (เปิด 07:00-16:00 น.)',
+        mapUrl: 'https://maps.google.com/?cid=15026278697383511950',
+        altLinks: [
+          { name: 'ครัวออโรรา@กว๊าน', url: 'https://maps.google.com/?cid=10034174420020390301' },
+          { name: 'ก๋วยเตี๋ยวอันเจริญเฮียน้อยหลังตลาด', url: 'https://maps.google.com/?cid=2843943559385938671' }
+        ]
+      },
+      {
+        id: 16, day: 'd3', dateLabel: 'จันทร์ 23 พ.ย.', time: '13:00 - 15:10', zone: 'พะเยา -> เมืองแพร่',
+        cat: 'food', title: 'ร้านขนมจีนน้ำย้อยเมืองแพร่',
+        subtitle: 'ขับรถจากพะเยาไปแพร่ (~145 กม. / 2 ชม.) แวะชิมของดีเมืองแพร่ก่อนร้านปิด',
+        hours: '10:30 - 16:30', rating: '4.1', soc: '',
+        details: 'เส้นขนมจีนบีบสดคลุกน้ำพริกน้ำย้อยรสเผ็ดหอม ทานคู่ซุปกระดูกหมู (ไปถึงบ่าย 3 ทันเวลาร้านปิด 16:30 น.)',
+        mapUrl: 'https://maps.google.com/?cid=13028285591822528086', altLinks: []
+      },
+      {
+        id: 17, day: 'd3', dateLabel: 'จันทร์ 23 พ.ย.', time: '15:15 - 15:40', zone: 'อ.เมืองแพร่',
+        cat: 'ev', title: '[ชาร์จ EV #5] ปั๊มบางจาก เพ็ญศรีบางจาก เซอร์วิส / EleX แพร่',
+        subtitle: 'เติมไฟในเมืองแพร่ให้เต็ม 90% ก่อนเข้าโรงแรมเฮือนนานาจอมสวรรค์',
+        hours: '05:00 - 22:00 / 24 ชม.', rating: '4.2 / 4.9', soc: '34% -> 90% (~20 นาที)',
+        details: 'ตั้งอยู่ ต.ป่าแมต อ.เมืองแพร่ (ใกล้ที่พัก) และมีสถานีชาร์จ EleX by EGAT นาจักร เปิด 24 ชม. ชาร์จไว้ 90% วิ่งเที่ยวแพร่-ศรีสัชนาลัย-สุโขทัยได้สบาย',
+        mapUrl: 'https://maps.google.com/?cid=5374101538894188069',
+        altLinks: [
+          { name: 'สถานีชาร์จ EleX by EGAT แพร่', url: 'https://maps.google.com/?cid=16551225777814964199' }
+        ]
+      },
+      {
+        id: 18, day: 'd3', dateLabel: 'จันทร์ 23 พ.ย.', time: '15:45 - 16:45', zone: 'ต.ในเวียง อ.เมืองแพร่',
+        cat: 'hotel', title: 'เช็คอิน: โรงแรมเฮือนนานาจอมสวรรค์ (Huern Nana Jomsawan)',
+        subtitle: 'ที่พักยืนยันแล้ว ใจกลางเมืองแพร่ อยู่ติดกับวัดจอมสวรรค์',
+        hours: 'เช็คอิน 14:00', rating: '4.2', soc: '',
+        details: 'โรงแรมสไตล์ล้านนาประยุกต์ มีสระว่ายน้ำ สามารถเดินไปชม วัดจอมสวรรค์ (วัดไม้สักศิลปะไทใหญ่) ข้างโรงแรมก่อนวัดปิด 16:30 น. ได้เลย',
+        mapUrl: 'https://maps.google.com/?cid=7584271463911328293',
+        altLinks: [
+          { name: 'วัดจอมสวรรค์ (ติดโรงแรม)', url: 'https://maps.google.com/?cid=14550317976438849260' }
+        ]
+      },
+      {
+        id: 19, day: 'd3', dateLabel: 'จันทร์ 23 พ.ย.', time: '16:45 - 18:15', zone: 'ต.ช่อแฮ อ.เมืองแพร่',
+        cat: 'sight', title: 'วัดพระธาตุช่อแฮ พระอารามหลวง & ซะป๊ะเย็น กาแฟสดคั่วเอง',
+        subtitle: 'ไหว้พระธาตุประจำปีขาลยามเย็น และจิบกาแฟคั่วเองหน้าวัด',
+        hours: '06:00 - 19:00', rating: '4.7 / 4.3', soc: '',
+        details: 'ขับรถจากโรงแรมเพียง 12 นาที ช่วงเย็นอากาศร่มรื่นไม่ร้อน แวะจิบกาแฟร้านซะป๊ะเย็นหน้าวัด',
+        mapUrl: 'https://maps.google.com/?cid=12871308166301417284',
+        altLinks: [
+          { name: 'ซะป๊ะเย็น กาแฟสดคั่วเอง', url: 'https://maps.google.com/?cid=6949415159231923332' }
+        ]
+      },
+      {
+        id: 20, day: 'd3', dateLabel: 'จันทร์ 23 พ.ย.', time: '18:30 - 20:30', zone: 'อ.เมืองแพร่',
+        cat: 'food', title: 'มื้อเย็นเมืองแพร่: ร้านป้ามา',
+        subtitle: 'ลิ้มลองอาหารเหนือและกับข้าวพื้นเมืองแพร่แท้ๆ (ห่างที่พัก 5 นาที)',
+        hours: '09:00 - 21:00', rating: '4.1', soc: '',
+        details: 'เมนูแนะนำ: ลาบแพร่ แกงแค ไส้อั่ว น้ำพริกหนุ่ม เปิดบริการถึง 21:00 น.',
+        mapUrl: 'https://maps.google.com/?cid=9798212767601357706', altLinks: []
+      },
+
+      // Day 4: Tue 24 Nov
+      {
+        id: 21, day: 'd4', dateLabel: 'อังคาร 24 พ.ย.', time: '08:30 - 10:00', zone: 'เขตเมืองเก่าแพร่',
+        cat: 'food', title: 'ชมคุ้มเจ้าหลวง & มื้อเช้า-กาแฟร้าน ฮอม - Hom 2493',
+        subtitle: 'ชมเรือนไม้สีเขียวพาสเทลโบราณ และทานข้าวซอย-กาแฟดริปในบ้านไม้เก่า',
+        hours: '08:30 - 16:30 / 09:00 - 15:30', rating: '4.6', soc: '',
+        details: 'คุ้มเจ้าหลวงเปิด 08:30 น. อยู่ใกล้กับร้าน ฮอม - Hom 2493 (เปิด 09:00 น.) เสิร์ฟข้าวซอยเมืองแพร่ ขนมจีนน้ำเงี้ยว และกาแฟคัดเมล็ด',
+        mapUrl: 'https://maps.google.com/?cid=8356783701634288342',
+        altLinks: [
+          { name: 'คุ้มเจ้าหลวง เมืองแพร่', url: 'https://maps.google.com/?cid=10449637912845196962' }
+        ]
+      },
+      {
+        id: 22, day: 'd4', dateLabel: 'อังคาร 24 พ.ย.', time: '10:00 - 12:00', zone: 'แพร่ -> อ.ศรีสัชนาลัย สุโขทัย',
+        cat: 'sight', title: 'แวะอุทยานประวัติศาสตร์ศรีสัชนาลัย หรือ ข้าวเปิ๊บยายเครื่อง',
+        subtitle: 'ทางผ่านบนถนน ทล.101 (ระยะทาง ~100 กม.) แวะเที่ยวก่อนเข้าเมืองสุโขทัย',
+        hours: '07:30 - 17:00', rating: '4.7 / 4.4', soc: 'แบตคงเหลือ ~65%',
+        details: 'ชมวัดช้างล้อมที่อุทยานประวัติศาสตร์ศรีสัชนาลัย หรือแวะชิมข้าวเปิ๊บ (ก๋วยเตี๋ยวพระร่วง) ที่ร้านข้าวเปิ๊บยายเครื่อง ต.บ้านตึก',
+        mapUrl: 'https://maps.google.com/?cid=8377909874194551180',
+        altLinks: [
+          { name: 'ข้าวเปิ๊บยายเครื่อง บ้านนาต้นจั่น', url: 'https://maps.google.com/?cid=10914959966540122205' }
+        ]
+      },
+      {
+        id: 23, day: 'd4', dateLabel: 'อังคาร 24 พ.ย.', time: '12:30 - 13:45', zone: 'อ.เมืองสุโขทัย',
+        cat: 'food', title: 'มื้อเที่ยง: ก๋วยเตี๋ยวสุโขทัยตาปุ้ย หรือ ไม้กลางกรุง',
+        subtitle: 'ก๋วยเตี๋ยวต้มยำสุโขทัยต้นตำรับ ใส่ถั่วฝักยาว หมูแดง ถั่วลิสงคั่วหอมๆ',
+        hours: '07:30 - 16:30 / 08:30 - 15:00', rating: '4.2', soc: '',
+        details: 'สั่งเส้นเล็กต้มยำสุโขทัยแห้ง ผัดไทยสุโขทัย ขนมเบื้องสุโขทัย และหมูสะเต๊ะ',
+        mapUrl: 'https://maps.google.com/?cid=12405735297268104625',
+        altLinks: [
+          { name: 'ร้านไม้กลางกรุง สุโขทัย', url: 'https://maps.google.com/?cid=10643033247623114246' }
+        ]
+      },
+      {
+        id: 24, day: 'd4', dateLabel: 'อังคาร 24 พ.ย.', time: '14:00 - 16:30', zone: 'ต.เมืองเก่า อ.เมืองสุโขทัย',
+        cat: 'hotel', title: 'เช็คอิน: Gen2 Boutique by Baanmo resort sukhothai',
+        subtitle: 'ที่พักยืนยันแล้ว ห่างอุทยานประวัติศาสตร์สุโขทัยเพียง 1.5 กม.',
+        hours: 'เช็คอิน 14:00', rating: '4.3', soc: 'แบตคงเหลือ ~50%',
+        details: 'เข้าที่พักบ่าย 2 เพื่อจอดรถและพักผ่อนเก็บแรง เลี่ยงรถติดหน้าอุทยานฯ ช่วงเย็นวันลอยกระทง',
+        mapUrl: 'https://maps.google.com/?cid=11881650287637569187', altLinks: []
+      },
+      {
+        id: 25, day: 'd4', dateLabel: 'อังคาร 24 พ.ย.', time: '16:30 - 22:30', zone: 'ต.เมืองเก่า อ.เมืองสุโขทัย',
+        cat: 'sight', title: 'งานประเพณีลอยกระทง เผาเทียน เล่นไฟ ณ อุทยานประวัติศาสตร์สุโขทัย',
+        subtitle: 'เดินตลาดแลกเบี้ยโบราณ ทานอาหารพื้นบ้าน ชมการแสดงแสงสีเสียงและพลุไฟ',
+        hours: '06:30 - 23:00', rating: '4.7', soc: '',
+        details: 'มื้อเย็นแลกเบี้ยหอยซื้อข้าวเปิ๊บ ก๋วยเตี๋ยวแบ ห่อหมกย่าง ทอดมันปลากราย ขนมไทยโบราณ และลอยกระทงริมสระน้ำโบราณสถาน',
+        mapUrl: 'https://maps.google.com/?cid=8716424051944966118', altLinks: []
+      },
+
+      // Day 5: Wed 25 Nov (Return Trip with Stops & Spark EV)
+      {
+        id: 26, day: 'd5', dateLabel: 'พุธ 25 พ.ย.', time: '09:15 - 09:45', zone: 'อ.ศรีสำโรง จ.สุโขทัย',
+        cat: 'sight', title: 'แวะซื้อของฝาก: ถั่วทอดลอนศิลป สาขา1(ครูแอ๋ว)',
+        subtitle: 'เช็คเอาท์จาก Gen2 Boutique แวะซื้อถั่วทอดแผ่นกลมบางกรอบและขนมเกลียว',
+        hours: '07:00 - 19:00', rating: '4.8', soc: '',
+        details: 'ต้นตำรับถั่วทอดสุโขทัย หอมถั่วลิสงคั่วใหม่และกลอย ซื้อเป็นของฝากก่อนมุ่งหน้าไปพิษณุโลก',
+        mapUrl: 'https://maps.google.com/?cid=2214242356242362910', altLinks: []
+      },
+      {
+        id: 27, day: 'd5', dateLabel: 'พุธ 25 พ.ย.', time: '10:30 - 11:00', zone: 'ต.พลายชุมพล อ.เมืองพิษณุโลก',
+        cat: 'ev', title: '[ชาร์จ EV #6] ปั๊มน้ำมันและEVบางจาก - พิษณุโลก (พลายชุมพล)',
+        subtitle: 'แวะชาร์จไฟบนถนน ทล.12 (พิษณุโลก-สุโขทัย) ก่อนเข้าตัวเมืองพิษณุโลก',
+        hours: 'เปิด 24 ชม.', rating: '3.7', soc: '36% -> 85% (~20 นาที)',
+        details: 'ตั้งอยู่ริม ถ.พิษณุโลก-สุโขทัย ต.พลายชุมพล (สถานีสำรองในพิษณุโลก: สถานีชาร์จ SPARK วังทอง / SPARK พรหมพิราม / บางจาก+EV บางระกำ)',
+        mapUrl: 'https://maps.google.com/?cid=6324497970574448363',
+        altLinks: [
+          { name: 'สถานีชาร์จ SPARK วังทอง', url: 'https://maps.google.com/?cid=2124972536834533383' },
+          { name: 'บางจาก+EV บางระกำ พิษณุโลก', url: 'https://maps.google.com/?cid=3377363459792096852' }
+        ]
+      },
+      {
+        id: 28, day: 'd5', dateLabel: 'พุธ 25 พ.ย.', time: '11:10 - 12:15', zone: 'อ.เมืองพิษณุโลก',
+        cat: 'sight', title: 'จุดแวะพักขากลับ 1: ไหว้พระพุทธชินราช (วัดใหญ่) & ก๋วยเตี๋ยวห้อยขาริมน่าน',
+        subtitle: 'กราบพระพุทธชินราชเสริมสิริมงคล ซื้อกล้วยตาก และชิมก๋วยเตี๋ยวห้อยขาข้างวัด',
+        hours: '06:00 - 20:00 / 08:00 - 16:30', rating: '4.8 / 4.1', soc: '',
+        details: 'เดินจากวัดพระศรีรัตนมหาธาตุวรมหาวิหารเลียบแม่น้ำน่านเพียง 150 เมตร ถึงร้านก๋วยเตี๋ยวห้อยขาริมน่าน',
+        mapUrl: 'https://maps.google.com/?cid=14257423306648110681',
+        altLinks: [
+          { name: 'ก๋วยเตี๋ยวห้อยขาริมน่าน พิษณุโลก', url: 'https://maps.google.com/?cid=4808513088278403832' }
+        ]
+      },
+      {
+        id: 29, day: 'd5', dateLabel: 'พุธ 25 พ.ย.', time: '13:45 - 15:00', zone: 'อ.เมืองนครสวรรค์',
+        cat: 'food', title: 'จุดแวะพักขากลับ 2: เล่งหงษ์ นครสวรรค์ โต๊ะจีน (หรือ ภัตตาคารโกยี) & โมจิจันทร์สุวรรณ์',
+        subtitle: 'ขับตาม ทล.117 ลงมานครสวรรค์ (~135 กม.) ทานมื้อเที่ยงและซื้อโมจิของฝาก',
+        hours: '09:30 - 22:00', rating: '4.4 / 4.3', soc: '',
+        details: 'เล่งหงษ์เด่นเป็ดปักกิ่ง หมูกรอบ ติ่มซำห้องแอร์เย็นสบาย / ภัตตาคารโกยีเด่นลูกชิ้นปลากรายและข้าวมันไก่ จากนั้นแวะซื้อโมจิ จันทร์สุวรรณ์',
+        mapUrl: 'https://maps.google.com/?cid=14573630227370964958',
+        altLinks: [
+          { name: 'ภัตตาคารโกยี นครสวรรค์', url: 'https://maps.google.com/?cid=8086491793743823472' },
+          { name: 'โมจิ จันทร์สุวรรณ์ (พหลโยธิน)', url: 'https://maps.google.com/?cid=16437759066059140035' }
+        ]
+      },
+      {
+        id: 30, day: 'd5', dateLabel: 'พุธ 25 พ.ย.', time: '15:00 - 15:25', zone: 'นครสวรรค์ หรือ อินทร์บุรี สิงห์บุรี',
+        cat: 'ev', title: '[ชาร์จ EV #7] สถานีชาร์จ Spark นครสวรรค์ หรือ ปั๊มบางจาก (น้ำมัน+EV) อินทร์บุรี',
+        subtitle: 'ชาร์จไฟรอบสุดท้าย 15-18 นาที เพื่อวิ่งยาวเข้ากรุงเทพฯ',
+        hours: 'เปิด 24 ชม.', rating: '4.6 / 4.2', soc: '50% -> 85% (~16 นาที)',
+        details: 'เลือกชาร์จที่ Spark วัดไทร นครสวรรค์ หรือขับลงมาสายเอเชีย ทล.32 แวะปั๊มบางจาก (น้ำมัน+EV) อินทร์บุรี จ.สิงห์บุรี',
+        mapUrl: 'https://maps.google.com/?cid=4403474009046155182',
+        altLinks: [
+          { name: 'ปั้มบางจาก (น้ำมัน+อีวี) ชีน้ำร้าย อินทร์บุรี', url: 'https://maps.google.com/?cid=16642566952039585197' },
+          { name: 'สถานีชาร์จ Spark วัดไทร นครสวรรค์', url: 'https://maps.google.com/?cid=15646423891790645649' }
+        ]
+      },
+      {
+        id: 31, day: 'd5', dateLabel: 'พุธ 25 พ.ย.', time: '16:30 - 17:45', zone: 'อยุธยา / อ่างทอง (สายเอเชีย)',
+        cat: 'food', title: 'จุดแวะพักขากลับ 3: ตลาดกลางเพื่อการเกษตร อยุธยา หรือ ร้านนิรมิต อ่างทอง',
+        subtitle: 'แวะทานกุ้งแม่น้ำเผาและปลาแม่น้ำเป็นมื้อเย็นส่งท้ายทริปก่อนเข้ากรุงเทพฯ',
+        hours: '06:00 - 18:00 / 10:00 - 20:00', rating: '4.3', soc: 'ถึง กทม. แบตเหลือ ~48%',
+        details: 'ตลาดกลางอยุธยาติดสายเอเชีย ทล.32 แวะง่ายไม่ต้องเข้าเมือง (ปิด 18:00 น.) หรือแวะร้านนิรมิต อ.วิเศษชัยชาญ จ.อ่างทอง (มิชลิน บิบ กูร์มองด์ เปิดถึง 20:00 น.)',
+        mapUrl: 'https://maps.google.com/?cid=16193742742846807174',
+        altLinks: [
+          { name: 'ร้านนิรมิต อ่างทอง', url: 'https://maps.google.com/?cid=1106898147514330398' }
+        ]
+      }
+    ];
+
+    const foodGuideData = [
+      { meal: 'เสาร์ 21 พ.ย. (เช้า)', zone: 'เชียงใหม่', name: 'โกเผือกโกดำ', menu: 'ขนมปังสังขยา 4 สี, ไข่กระทะ, กวยจั๊บญวน', hours: '07:30 - 14:00 (ปิดวันอังคาร)', rating: '4.1', url: 'https://maps.google.com/?cid=6174407177841976205' },
+      { meal: 'เสาร์ 21 พ.ย. (เช้า)', zone: 'เชียงใหม่', name: 'ร้านข้าวซอยแม่สาย (มิชลิน)', menu: 'ข้าวซอยเนื้อเปื่อย, ข้าวซอยไก่, ขนมจีนน้ำเงี้ยว', hours: '08:00 - 16:00 (ปิดวันอาทิตย์)', rating: '4.5', url: 'https://maps.google.com/?cid=5039605543517047272' },
+      { meal: 'เสาร์ 21 พ.ย. (เที่ยง)', zone: 'เชียงใหม่', name: 'สุกี้ช้างเผือก (สาขาหลัง มช.)', menu: 'สุกี้แห้งหมู/เนื้อ ผัดกระทะร้อนหอมกลิ่นคั่วกระทะ', hours: '09:00 - 00:00 (เปิดกลางวัน ใกล้วัดอุโมงค์)', rating: '4.4', url: 'https://maps.google.com/?cid=9362597521394954943' },
+      { meal: 'เสาร์ 21 พ.ย. (เที่ยง)', zone: 'เชียงใหม่', name: 'ฮ้านถึงเจียงใหม่ (ซอยวัดอุโมงค์)', menu: 'ขันโตกเมือง, แกงฮังเล, ลาบคั่ว, ปูอ่อง', hours: '10:00 - 16:00, 17:00 - 21:30', rating: '4.8', url: 'https://maps.google.com/?cid=4537952833204113893' },
+      { meal: 'เสาร์ 21 พ.ย. (บ่าย)', zone: 'เชียงใหม่', name: 'จงเฮง ก๋วยเตี๋ยวต้มยำ สาขานิมมาน ซอย 6', menu: 'บะหมี่ต้มยำหมูบะช่อลูกชิ้นปลา, เกี๊ยวทอด', hours: '10:00 - 20:00', rating: '4.9', url: 'https://maps.google.com/?cid=2654950965071083396' },
+      { meal: 'เสาร์ 21 พ.ย. (เย็น)', zone: 'เชียงใหม่', name: 'ลาบไก่บ้านโฮ่ง สาขา 3 (สันทราย)', menu: 'ลาบไก่คั่ว, ต้มยำไก่เมือง, ไส้ทอด (ทางไปเวียงป่าเป้า)', hours: '10:00 - 21:00', rating: '4.3', url: 'https://maps.google.com/?cid=10485893456882023173' },
+      { meal: 'อาทิตย์ 22 พ.ย. (บ่าย)', zone: 'เชียงราย', name: 'ชีวิตธรรมดา คอฟฟี่เฮาส์ บิสโทร บาร์', menu: 'ข้าวซอยไก่ย่าง, สปาเก็ตตี้ไส้อั่ว, เค้กโฮมเมดริมน้ำกก', hours: '09:00 - 22:00', rating: '4.6', url: 'https://maps.google.com/?cid=4467002379975881651' },
+      { meal: 'อาทิตย์ 22 พ.ย. (ค่ำ)', zone: 'เชียงราย', name: 'เชียงรายไนท์บาร์ซาร์ & ข้าวต้มมีนา', menu: 'จิ้มจุ่มหม้อดิน, หมูกรอบคั่วพริกเกลือ, ยำปลาสลิด', hours: '17:00 - 23:00', rating: '4.2', url: 'https://maps.google.com/?cid=4544176324518484684' },
+      { meal: 'จันทร์ 23 พ.ย. (เช้า)', zone: 'เชียงราย', name: 'ร้านลาบป้าไหล่-อาหารพื้นเมือง', menu: 'ลาบหมูคั่ว, แกงอ่อม, แหนมหมกไข่', hours: '09:00 - 20:00 (เปิดวันจันทร์)', rating: '4.5', url: 'https://maps.google.com/?cid=8641293328307667443' },
+      { meal: 'จันทร์ 23 พ.ย. (เที่ยง)', zone: 'พะเยา', name: 'ชิดลม ชมกว๊าน', menu: 'ปลาส้มทอดทรงเครื่อง, ต้มยำปลาคัง, กุ้งฝอยเต้น', hours: '10:30 - 23:00', rating: '4.3', url: 'https://maps.google.com/?cid=15026278697383511950' },
+      { meal: 'จันทร์ 23 พ.ย. (เที่ยง)', zone: 'พะเยา', name: 'ครัวออโรรา@กว๊าน', menu: 'ปลานิลเผาเกลือ, แกงส้มชะอมกุ้ง, ปลาส้มทอด', hours: '11:00 - 21:30', rating: '4.3', url: 'https://maps.google.com/?cid=10034174420020390301' },
+      { meal: 'จันทร์ 23 พ.ย. (เที่ยง)', zone: 'พะเยา', name: 'ก๋วยเตี๋ยวอันเจริญเฮียน้อยหลังตลาด พะเยา', menu: 'เกาเหลาเนื้อเปื่อยลูกชิ้น, เส้นเล็กแห้งเนื้อสด', hours: '07:00 - 16:00', rating: '4.3', url: 'https://maps.google.com/?cid=2843943559385938671' },
+      { meal: 'จันทร์ 23 พ.ย. (บ่าย)', zone: 'แพร่', name: 'ร้านขนมจีนน้ำย้อยเมืองแพร่', menu: 'ขนมจีนเส้นสดคลุกน้ำพริกน้ำย้อย + ซุปกระดูกหมู', hours: '10:30 - 16:30', rating: '4.1', url: 'https://maps.google.com/?cid=13028285591822528086' },
+      { meal: 'จันทร์ 23 พ.ย. (เย็น)', zone: 'แพร่', name: 'ซะป๊ะเย็น กาแฟสดคั่วเอง (หน้าวัดช่อแฮ)', menu: 'กาแฟดริปคั่วสด, เอสเปรสโซ่เย็น', hours: '06:00 - 19:00', rating: '4.3', url: 'https://maps.google.com/?cid=6949415159231923332' },
+      { meal: 'จันทร์ 23 พ.ย. (ค่ำ)', zone: 'แพร่', name: 'ร้านป้ามา', menu: 'ลาบแพร่, แกงแค, ไส้อั่ว, น้ำพริกหนุ่ม', hours: '09:00 - 21:00', rating: '4.1', url: 'https://maps.google.com/?cid=9798212767601357706' },
+      { meal: 'อังคาร 24 พ.ย. (เช้า)', zone: 'แพร่', name: 'ฮอม - Hom 2493', menu: 'ข้าวซอยเมืองแพร่, ขนมจีนน้ำเงี้ยว, กาแฟดริปบ้านไม้เก่า', hours: '09:00 - 15:30', rating: '4.6', url: 'https://maps.google.com/?cid=8356783701634288342' },
+      { meal: 'อังคาร 24 พ.ย. (สาย)', zone: 'สุโขทัย', name: 'ข้าวเปิ๊บยายเครื่อง (ศรีสัชนาลัย)', menu: 'ข้าวเปิ๊บ (ก๋วยเตี๋ยวพระร่วง), ก๋วยเตี๋ยวแบ, หมี่พัน', hours: '07:30 - 17:00', rating: '4.4', url: 'https://maps.google.com/?cid=10914959966540122205' },
+      { meal: 'อังคาร 24 พ.ย. (เที่ยง)', zone: 'สุโขทัย', name: 'ก๋วยเตี๋ยวสุโขทัยตาปุ้ย', menu: 'เส้นเล็กต้มยำสุโขทัยแห้ง, ผัดไทยสุโขทัย, ขนมเกลียว', hours: '07:30 - 16:30', rating: '4.2', url: 'https://maps.google.com/?cid=12405735297268104625' },
+      { meal: 'อังคาร 24 พ.ย. (เที่ยง)', zone: 'สุโขทัย', name: 'ไม้กลางกรุง', menu: 'ก๋วยเตี๋ยวสุโขทัย, ขนมเบื้องสุโขทัย, หมูสะเต๊ะ', hours: '08:30 - 15:00', rating: '4.2', url: 'https://maps.google.com/?cid=10643033247623114246' },
+      { meal: 'พุธ 25 พ.ย. (ของฝาก)', zone: 'สุโขทัย', name: 'ถั่วทอดลอนศิลป สาขา1(ครูแอ๋ว)', menu: 'ถั่วทอดแผ่นกลมบางกรอบ, ขนมเกลียวสุโขทัย', hours: '07:00 - 19:00', rating: '4.8', url: 'https://maps.google.com/?cid=2214242356242362910' },
+      { meal: 'พุธ 25 พ.ย. (สาย)', zone: 'ขากลับ', name: 'ก๋วยเตี๋ยวห้อยขาริมน่าน จ.พิษณุโลก', menu: 'ก๋วยเตี๋ยวต้มยำริมแม่น้ำน่าน (ข้างวัดพระพุทธชินราช)', hours: '08:00 - 16:30', rating: '4.1', url: 'https://maps.google.com/?cid=4808513088278403832' },
+      { meal: 'พุธ 25 พ.ย. (เที่ยง)', zone: 'ขากลับ', name: 'เล่งหงษ์ นครสวรรค์ โต๊ะจีน', menu: 'เป็ดปักกิ่ง, หมูกรอบฮ่องกง, ติ่มซำ, ปลาม้าผัดคื่นช่าย', hours: '09:30 - 22:00', rating: '4.4', url: 'https://maps.google.com/?cid=14573630227370964958' },
+      { meal: 'พุธ 25 พ.ย. (เที่ยง)', zone: 'ขากลับ', name: 'ภัตตาคารโกยี & โมจิ จันทร์สุวรรณ์ นครสวรรค์', menu: 'ก๋วยเตี๋ยวลูกชิ้นปลากราย, ข้าวมันไก่ & โมจิอบควันเทียน', hours: '09:30 - 20:30', rating: '4.1 / 4.3', url: 'https://maps.google.com/?cid=8086491793743823472' },
+      { meal: 'พุธ 25 พ.ย. (เย็น)', zone: 'ขากลับ', name: 'ตลาดกลางเพื่อการเกษตร อยุธยา / ร้านนิรมิต อ่างทอง', menu: 'กุ้งแม่น้ำเผามันเยิ้ม, ปลาเนื้ออ่อนทอดกระเทียม', hours: '06:00 - 18:00 / 10:00 - 20:00', rating: '4.3', url: 'https://maps.google.com/?cid=16193742742846807174' }
+    ];
+
+    const confirmedHotels = [
+      { night: 'คืนที่ 1 (เสาร์ 21 พ.ย.)', city: 'อ.เวียงป่าเป้า จ.เชียงราย', name: 'บ้านพักส่วนตัว อ.เวียงป่าเป้า', price: 'ฟรี', note: 'ริมทางหลวง 118 เดินทางไปงานแต่งเมืองเชียงรายเช้าวันอาทิตย์ใช้เวลา 1.5 ชม.', url: 'https://maps.google.com/?cid=10485893456882023173' },
+      { night: 'คืนที่ 2 (อาทิตย์ 22 พ.ย.)', city: 'อ.เมืองเชียงราย', name: 'ที่พักโซนตัวเมืองเชียงราย (ใกล้ไนท์บาร์ซาร์)', price: '~1,200 บ.', note: 'เดินเที่ยวเชียงรายไนท์บาร์ซาร์และทานข้าวต้มมีนาได้สะดวก', url: 'https://maps.google.com/?cid=2495050782346488007' },
+      { night: 'คืนที่ 3 (จันทร์ 23 พ.ย.)', city: 'อ.เมืองแพร่', name: 'โรงแรมเฮือนนานาจอมสวรรค์ (Huern Nana Jomsawan)', price: '~1,300 บ.', note: 'ยืนยันแล้ว: 225/4 ถ.ยันตรกิจโกศล ติดวัดจอมสวรรค์ มีสระว่ายน้ำ โทร. 054-511-960', url: 'https://maps.google.com/?cid=7584271463911328293' },
+      { night: 'คืนที่ 4 (อังคาร 24 พ.ย.)', city: 'ต.เมืองเก่า อ.เมืองสุโขทัย', name: 'Gen2 Boutique by Baanmo resort sukhothai', price: '~1,800 บ.', note: 'ยืนยันแล้ว: 420/2 ม.2 ต.เมืองเก่า ห่างอุทยานประวัติศาสตร์สุโขทัย 1.5 กม. โทร. 085-054-8654', url: 'https://maps.google.com/?cid=11881650287637569187' }
+    ];
+
+    let currentDay = 'all';
+    let currentCat = 'all';
+    let searchQuery = '';
+
+    function getCategoryBadge(cat) {
+      if (cat === 'ev') return `<span class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"><i class="fa-solid fa-charging-station mr-1"></i>Spark EV / บางจาก</span>`;
+      if (cat === 'food') return `<span class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-amber-500/20 text-amber-300 border border-amber-500/30"><i class="fa-solid fa-utensils mr-1"></i>ร้านอาหาร</span>`;
+      if (cat === 'hotel') return `<span class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-sky-500/20 text-sky-300 border border-sky-500/30"><i class="fa-solid fa-bed mr-1"></i>ที่พักยืนยันแล้ว</span>`;
+      return `<span class="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-purple-500/20 text-purple-300 border border-purple-500/30"><i class="fa-solid fa-location-dot mr-1"></i>ที่เที่ยว/ของฝาก</span>`;
+    }
+
+    function renderTimeline() {
+      const container = document.getElementById('timelineContainer');
+      const filtered = itineraryItems.filter(item => {
+        const matchDay = currentDay === 'all' || item.day === currentDay;
+        const matchCat = currentCat === 'all' || item.cat === currentCat;
+        const q = searchQuery.toLowerCase();
+        const matchSearch = !q || item.title.toLowerCase().includes(q) || item.subtitle.toLowerCase().includes(q) || item.zone.toLowerCase().includes(q) || item.details.toLowerCase().includes(q);
+        return matchDay && matchCat && matchSearch;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div class="glass-card rounded-2xl p-6 text-center text-xs text-slate-400">ไม่พบรายการที่ค้นหา</div>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map(item => {
+        const cardGlow = item.cat === 'ev' ? 'ev-glow' : (item.cat === 'hotel' ? 'hotel-glow' : '');
+        const altButtons = (item.altLinks || []).map(a =>
+          `<a href="${a.url}" target="_blank" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] bg-slate-800 hover:bg-slate-700 text-sky-300 border border-slate-700">
+            <i class="fa-solid fa-location-arrow text-[10px]"></i>${a.name}
+          </a>`
+        ).join('');
+
+        return `
+          <div class="glass-card rounded-2xl p-3.5 transition-all ${cardGlow}">
+            <div class="flex items-center justify-between gap-2 mb-1.5">
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <span class="text-[11px] font-bold text-sky-400">${item.dateLabel}</span>
+                <span class="text-[11px] text-slate-400">• ${item.time}</span>
+              </div>
+              ${getCategoryBadge(item.cat)}
+            </div>
+
+            <h3 class="text-sm font-bold text-white leading-snug">${item.title}</h3>
+            <p class="text-xs text-slate-300 mt-0.5">${item.subtitle}</p>
+
+            <div class="flex flex-wrap items-center gap-2 mt-2 text-[11px] text-slate-400">
+              <span><i class="fa-regular fa-clock mr-1 text-slate-500"></i>${item.hours}</span>
+              ${item.rating !== '-' ? `<span><i class="fa-solid fa-star mr-1 text-amber-400"></i>${item.rating}</span>` : ''}
+              ${item.soc ? `<span class="px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-700/50 font-medium"><i class="fa-solid fa-battery-three-quarters mr-1"></i>${item.soc}</span>` : ''}
+            </div>
+
+            <p class="text-[11px] text-slate-400 mt-2 bg-slate-900/70 p-2.5 rounded-xl border border-slate-800/80 leading-relaxed">
+              ${item.details}
+            </p>
+
+            <div class="mt-2.5 flex flex-wrap items-center gap-1.5">
+              <a href="${item.mapUrl}" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-sky-500 hover:bg-sky-400 text-slate-950 shadow">
+                <i class="fa-solid fa-map-location-dot"></i>นำทาง Google Maps
+              </a>
+              ${altButtons}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderEVStations() {
+      const evContainer = document.getElementById('evStationsContainer');
+      const evItems = itineraryItems.filter(i => i.cat === 'ev');
+      evContainer.innerHTML = evItems.map((item, idx) => `
+        <div class="glass-card ev-glow rounded-2xl p-3.5">
+          <div class="flex justify-between items-start">
+            <span class="px-2 py-0.5 text-[10px] font-bold rounded bg-emerald-500 text-slate-950">จุดชาร์จที่ ${idx + 1}</span>
+            <span class="text-[11px] text-emerald-400 font-semibold"><i class="fa-solid fa-battery-bolt mr-1"></i>${item.soc}</span>
+          </div>
+          <h3 class="text-sm font-bold text-white mt-1.5">${item.title.replace(/\[ชาร์จ EV #\d\]\s*/, '')}</h3>
+          <p class="text-xs text-slate-300 mt-0.5">${item.dateLabel} (${item.time}) • ${item.zone}</p>
+          <p class="text-[11px] text-slate-400 mt-1.5 bg-slate-900/80 p-2 rounded-xl border border-slate-800">${item.details}</p>
+          <div class="mt-2.5 flex flex-wrap gap-1.5">
+            <a href="${item.mapUrl}" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-500 text-slate-950">
+              <i class="fa-solid fa-charging-station"></i>เปิดพิกัดสถานีหลัก
+            </a>
+            ${(item.altLinks || []).map(a => `<a href="${a.url}" target="_blank" class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-[11px] bg-slate-800 text-emerald-300 border border-slate-700"><i class="fa-solid fa-plug text-[10px]"></i>${a.name}</a>`).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderFoodList(zoneFilter = 'all') {
+      const container = document.getElementById('foodListContainer');
+      const filtered = foodGuideData.filter(f => zoneFilter === 'all' || f.zone === zoneFilter);
+      container.innerHTML = filtered.map(f => `
+        <div class="glass-card rounded-2xl p-3.5">
+          <div class="flex justify-between items-center text-[11px]">
+            <span class="font-semibold text-amber-400">${f.meal} • ${f.zone}</span>
+            <span class="text-slate-300"><i class="fa-solid fa-star text-amber-400 mr-1"></i>${f.rating}</span>
+          </div>
+          <h3 class="text-sm font-bold text-white mt-1">${f.name}</h3>
+          <p class="text-xs text-slate-300 mt-0.5"><span class="text-slate-400">เมนูห้ามพลาด:</span> ${f.menu}</p>
+          <div class="flex items-center justify-between mt-2.5 pt-2 border-t border-slate-800/80">
+            <span class="text-[11px] text-slate-400"><i class="fa-regular fa-clock mr-1"></i>${f.hours}</span>
+            <a href="${f.url}" target="_blank" class="px-3 py-1 rounded-xl text-xs font-semibold bg-amber-500 text-slate-950">
+              <i class="fa-solid fa-location-dot mr-1"></i>แผนที่ร้าน
+            </a>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderHotels() {
+      const container = document.getElementById('hotelsContainer');
+      container.innerHTML = confirmedHotels.map(h => `
+        <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800">
+          <div class="flex justify-between items-center text-[11px]">
+            <span class="font-bold text-sky-400">${h.night}</span>
+            <span class="px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 font-semibold">${h.price}</span>
+          </div>
+          <div class="text-sm font-bold text-white mt-1">${h.name}</div>
+          <div class="text-xs text-slate-400 mt-0.5">${h.city} — ${h.note}</div>
+          <a href="${h.url}" target="_blank" class="mt-2 inline-flex items-center gap-1 text-xs text-sky-400 font-medium">
+            <i class="fa-solid fa-map-pin"></i> เปิดพิกัดที่พักบน Google Maps &rarr;
+          </a>
+        </div>
+      `).join('');
+    }
+
+    function selectDay(day) {
+      currentDay = day;
+      document.querySelectorAll('.day-pill').forEach(btn => {
+        if (btn.dataset.day === day) {
+          btn.className = 'day-pill shrink-0 px-3 py-1.5 rounded-xl text-xs font-semibold bg-sky-500 text-white shadow';
+        } else {
+          btn.className = 'day-pill shrink-0 px-3 py-1.5 rounded-xl text-xs font-medium bg-slate-900 text-slate-300 border border-slate-800';
+        }
+      });
+      renderTimeline();
+    }
+
+    function filterCategory(cat) {
+      currentCat = cat;
+      document.querySelectorAll('.cat-chip').forEach(btn => {
+        if (btn.dataset.cat === cat) {
+          btn.className = 'cat-chip px-2.5 py-1 rounded-lg text-[11px] bg-slate-800 text-sky-400 border border-sky-500/40 font-medium';
+        } else {
+          btn.className = 'cat-chip px-2.5 py-1 rounded-lg text-[11px] bg-slate-900 text-slate-400 border border-slate-800';
+        }
+      });
+      renderTimeline();
+    }
+
+    function filterFoodZone(zone) {
+      renderFoodList(zone);
+    }
+
+    function handleSearch(val) {
+      searchQuery = val.trim();
+      document.getElementById('clearSearchBtn').classList.toggle('hidden', !searchQuery);
+      switchTab('itinerary');
+      renderTimeline();
+    }
+
+    function clearSearch() {
+      document.getElementById('searchInput').value = '';
+      handleSearch('');
+    }
+
+    function updateRangeCalc(soc) {
+      const realRange = Math.round((soc / 100) * 440);
+      const wltpRange = Math.round((soc / 100) * 510);
+      document.getElementById('socLabel').innerText = `${soc}% (~${realRange} กม. ขับจริง / ${wltpRange} กม. มาตรฐาน)`;
+    }
+
+    function switchTab(tab) {
+      ['itinerary', 'ev', 'food', 'summary'].forEach(t => {
+        document.getElementById(`view-${t}`).classList.toggle('hidden', t !== tab);
+        const navBtn = document.getElementById(`nav-${t}`);
+        if (t === tab) {
+          navBtn.className = 'nav-btn flex flex-col items-center py-1 px-3 rounded-xl text-sky-400';
+        } else {
+          navBtn.className = 'nav-btn flex flex-col items-center py-1 px-3 rounded-xl text-slate-400';
+        }
+      });
+    }
+
+    // Initialize App
+    renderTimeline();
+    renderEVStations();
+    renderFoodList();
+    renderHotels();
+  </script>
+</body>
+</html>
